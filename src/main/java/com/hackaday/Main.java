@@ -19,7 +19,6 @@ public class Main {
       ParametricFile parametricFile = new ParametricFile();
       POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(new File(args[args.length - 1])));
       if (parametricFile.load(new DocumentInputStream((DocumentEntry) fs.getRoot().getEntry("FileHeader")))) {
-        System.out.println("Successful!");
         System.out.println(parametricFile.getJSON().toString(2));
       }
     }
