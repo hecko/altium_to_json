@@ -1,0 +1,43 @@
+#!/usr/bin/python
+
+import json
+from pprint import pprint
+
+def get_part(part):
+    out = {}
+    out['LIBREFERENCE'] = part['LIBREFERENCE']
+    if part.get('COMPONENTDESCRIPTION'):
+        out['COMPONENTDESCRIPTION'] = part['COMPONENTDESCRIPTION']
+    else:
+        out['COMPONENTDESCRIPTION'] = ""
+
+    for param in part['children']:
+        if param.get('NAME') and param.get('TEXT'):
+            out[param['NAME']] = param['TEXT']
+        if param.get('children'):
+            for subparam in param['children']:
+                if subparam.get('MODELNAME'):
+                    out['MODELNAME'] = subparam['MODELNAME']
+    return out 
+
+def parse_data(data):
+    parts = []
+    for child in data['children']:
+        if child.get('LIBREFERENCE') and child.get('children'):
+            parts.append(get_part(child))
+    return parts
+
+parts = []
+
+for file in ('../out.json','../out2.json'):
+    with open(file) as data_file:    
+        data = json.load(data_file)
+        parts.extend(parse_data(data))
+
+for part in parts:
+    print('"' + str(part.get('Comment').encode('utf-8')) + '","'
+        + str(part.get('COMPONENTDESCRIPTION').encode('utf-8')) + '","'
+        + str(part.get('Designator').encode('utf-8')) + '","'
+        + str(part.get('MODELNAME').encode('utf-8')) + '","'
+        + str(part.get('LIBREFERENCE').encode('utf-8')) + '"'
+         )
