@@ -2,6 +2,7 @@
 
 import json
 from pprint import pprint
+import argparse
 
 def get_part(part):
     out = {}
@@ -27,9 +28,17 @@ def parse_data(data):
             parts.append(get_part(child))
     return parts
 
+
+parser = argparse.ArgumentParser(description='Process JSON and output CSV file.')
+parser.add_argument('--files', action='store', required=True, nargs='+',
+                    help='JSON file full path')
+args = parser.parse_args()
+
 parts = []
 
-for file in ('../out.json','../out2.json'):
+pprint(args)
+
+for file in args.files:
     with open(file) as data_file:    
         data = json.load(data_file)
         parts.extend(parse_data(data))
