@@ -8,6 +8,10 @@ More details can be found at https://hackaday.io/projects/hacker/185
  
 ### Compiling and running
 
+Install maven (example for Ubuntu):
+
+    apt-get install maven default-jdk
+
 Clone repository and then run following to compile the code:
 
     mvn install compile package
